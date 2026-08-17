@@ -23,6 +23,10 @@ import css from './ChatView.module.css'
 
 const FOLLOW_THRESHOLD = 24
 
+/** Chevron wavefront delays (ms) across the 3×3 status grid: the middle row
+ *  sweeps left→right first, the outer rows lag one step (Drive pattern). */
+const PIXEL_DELAYS = [90, 180, 270, 0, 90, 180, 90, 180, 270]
+
 /** Active column host when present; otherwise the view-local scroller. */
 function scrollerOf(from: HTMLElement): HTMLElement {
   return (from.closest('[data-conversation-scroll]')) ?? from
@@ -129,6 +133,11 @@ function TurnStatus({ startTime, t }: {
   const showClock = elapsedMs >= 15_000
   return (
     <div className={css.turnStatus} role="status" aria-live="polite">
+      <span className={css.turnStatusGrid} aria-hidden>
+        {PIXEL_DELAYS.map((delay, i) => (
+          <span key={i} className={css.turnStatusCell} style={{ animationDelay: `${delay}ms` }} />
+        ))}
+      </span>
       Deep diving...
       {showClock && (
         <span className={css.turnStatusClock} aria-hidden>

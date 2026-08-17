@@ -100,6 +100,35 @@
   -webkit-text-fill-color: var(--dsw-alias-label-caption);
 }
 
+/* 3×3 pixel grid leading the turn label: a chevron wavefront sweeps the
+   cells on the same cadence as the shimmer; reduced-motion freezes it. */
+.turnStatusGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 4px);
+  gap: 1.5px;
+  margin-right: 8px;
+  flex: none;
+}
+
+.turnStatusCell {
+  width: 4px;
+  height: 4px;
+  border-radius: 1px;
+  background: var(--dsw-static-deepseek-500);
+  opacity: 0.15;
+  animation: dsh-pixel-on 650ms ease-in-out infinite;
+}
+
+@keyframes dsh-pixel-on {
+  0%,
+  100% {
+    opacity: 0.15;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
 @keyframes dsh-turn-status-shimmer {
   to {
     background-position: 0 0;
@@ -111,6 +140,10 @@
     background-position: 0 0;
     background-size: 100% 100%;
     animation: none;
+  }
+  .turnStatusCell {
+    animation: none;
+    opacity: 0.15;
   }
 }
 
