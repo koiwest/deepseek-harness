@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# dsh — 本项目的完全自包含入口
+#
+# 固定 DSH_HOME 到仓库内 .dsh-home,与全局 ~/.dsh 完全隔离:
+# 所有运行时数据(settings / credentials / profiles / sessions)都在项目内。
+# 若显式设置了 DSH_HOME 则尊重之。
+#
+# 用法:
+#   ./dsh web                      启动 Web UI
+#   ./dsh --profile headless "任务" 跑一次性任务
+set -euo pipefail
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+export DSH_HOME="${DSH_HOME:-$ROOT/.dsh-home}"
+cd "$ROOT"
+exec node "$ROOT/apps/cli/lib/bin.js" "$@"
